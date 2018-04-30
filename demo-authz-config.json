@@ -1,0 +1,182 @@
+{
+  "allowRemoteResourceManagement": false,
+  "policyEnforcementMode": "ENFORCING",
+  "resources": [
+    {
+      "name": "urn:demo:resources:all_api",
+      "uri": "/api/*",
+      "scopes": [
+        {
+          "name": "urn:demo:scope:default"
+        }
+      ]
+    },
+    {
+      "name": "urn:demo:resources:manager",
+      "uri": "/api/manager/*"
+    },
+    {
+      "name": "urn:demo:resources:companies",
+      "uri": "/api/companies/*"
+    },
+    {
+      "name": "urn:demo:resources:users",
+      "uri": "/api/users/*",
+      "scopes": [
+        {
+          "name": "urn:demo:scope:create"
+        },
+        {
+          "name": "urn:demo:scope:delete"
+        },
+        {
+          "name": "urn:demo:scope:update"
+        },
+        {
+          "name": "urn:demo:scope:read"
+        }
+      ]
+    },
+    {
+      "name": "Default Resource",
+      "uri": "/*",
+      "type": "urn:demo:resources:default",
+      "scopes": [
+        {
+          "name": "urn:demo:scope:default"
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "name": "teste can access",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "code": "var context = $evaluation.getContext()\nvar identity = context.getIdentity()\nvar permission = $evaluation.getPermission()\nvar scopes = permission.getScopes()"
+      }
+    },
+    {
+      "name": "urn:demo:policies:realm_role",
+      "description": "Usuário pertence ao Realm Role demo-users",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "code": "var context = $evaluation.getContext();\nvar identity = context.getIdentity();\n\nif(identity.hasRealmRole('demo-users')){\n    $evaluation.grant()\n}else{\n    $evaluation.deny()\n}"
+      }
+    },
+    {
+      "name": "Default Policy",
+      "description": "A policy that grants access only for users within this realm",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "AFFIRMATIVE",
+      "config": {
+        "code": "// by default, grants any permission associated with this policy\n$evaluation.grant();\n"
+      }
+    },
+    {
+      "name": "urn:demo:policies:users:delete",
+      "description": "Can delete users",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "code": "var context = $evaluation.getContext();\nvar identity = context.getIdentity();\n\nif(identity.hasClientRole('demo','users:delete')){\n    $evaluation.grant()\n}else{\n    $evaluation.deny()\n}"
+      }
+    },
+    {
+      "name": "urn:demo:policies:users:read",
+      "description": "Can read users",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "code": "var context = $evaluation.getContext();\nvar identity = context.getIdentity();\n\nif(identity.hasClientRole('demo','users:read')){\n    $evaluation.grant()\n}"
+      }
+    },
+    {
+      "name": "urn:demo:policies:users:create",
+      "description": "Can create users",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "code": "var context = $evaluation.getContext();\nvar identity = context.getIdentity();\n\nif(identity.hasClientRole('demo','users:create')){\n    $evaluation.grant()\n}else{\n    $evaluation.deny()\n}"
+      }
+    },
+    {
+      "name": "urn:demo:policies:users:update",
+      "description": "Can update users",
+      "type": "js",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "code": "var context = $evaluation.getContext();\nvar identity = context.getIdentity();\n\nif(identity.hasClientRole('demo','users:update')){\n    $evaluation.grant()\n}else{\n    $evaluation.deny()\n}"
+      }
+    },
+    {
+      "name": "urn:demo:policy:manager",
+      "description": "Managers can do anything",
+      "type": "role",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "roles": "[{\"id\":\"demo/manager-role\",\"required\":true},{\"id\":\"demo-users\",\"required\":true}]"
+      }
+    },
+    {
+      "name": "urn:demo:permission:users:read",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "AFFIRMATIVE",
+      "config": {
+        "resources": "[\"urn:demo:resources:users\"]",
+        "scopes": "[\"urn:demo:scope:read\"]",
+        "applyPolicies": "[\"urn:demo:policies:users:read\"]"
+      }
+    },
+    {
+      "name": "urn:demo:permission:users:create",
+      "type": "scope",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "resources": "[\"urn:demo:resources:users\"]",
+        "scopes": "[\"urn:demo:scope:create\"]",
+        "applyPolicies": "[\"urn:demo:policies:users:create\"]"
+      }
+    },
+    {
+      "name": "Default Permission",
+      "description": "A permission that applies to the default resource type",
+      "type": "resource",
+      "logic": "POSITIVE",
+      "decisionStrategy": "UNANIMOUS",
+      "config": {
+        "defaultResourceType": "urn:demo:resources:default",
+        "applyPolicies": "[\"Default Policy\"]"
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "name": "urn:demo:scope:default"
+    },
+    {
+      "name": "urn:demo:scope:delete"
+    },
+    {
+      "name": "urn:demo:scope:update"
+    },
+    {
+      "name": "urn:demo:scope:read"
+    },
+    {
+      "name": "urn:demo:scope:create"
+    }
+  ]
+}

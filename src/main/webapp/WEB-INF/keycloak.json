@@ -1,0 +1,47 @@
+{
+    "realm": "HML",
+    "auth-server-url": "http://www.sistemafieg.org.br/auth",
+    "ssl-required": "external",
+    "resource": "demo",
+    "credentials": {
+        "secret": "283bd14c-d9eb-4840-8a20-c80f11e560ba"
+    },
+    "enable-basic-auth":true,
+    "use-resource-role-mappings": true,
+    "policy-enforcer": {
+        "enforcement-mode": "ENFORCING",
+        "on-deny-redirect-to" : "/demo/access-denied",
+        "paths": [
+            {
+                "path": "/api/users/*",
+                "methods": [
+                    {"method": "GET","scopes": ["urn:demo:scope:read"]},
+                    {"method": "POST","scopes": ["urn:demo:scope:create"]},
+                    {"method": "PUT","scopes": ["urn:demo:scope:update"]},
+                    {"method": "DELETE","scopes": ["urn:demo:scope:delete"]}
+                ]
+            },{
+                "path": "/api/companies/*",
+                "methods": [
+                    {"method": "GET","scopes": ["urn:demo:scope:read"]},
+                    {"method": "POST","scopes": ["urn:demo:scope:create"]},
+                    {"method": "PUT","scopes": ["urn:demo:scope:update"]},
+                    {"method": "DELETE","scopes": ["urn:demo:scope:delete"]}
+                ]
+            },{
+                "path": "/api/manager/*",
+                "methods": [
+                    {"method": "GET","scopes": ["urn:demo:scope:read"]},
+                    {"method": "POST","scopes": ["urn:demo:scope:create"]},
+                    {"method": "PUT","scopes": ["urn:demo:scope:update"]},
+                    {"method": "DELETE","scopes": ["urn:demo:scope:delete"]}
+                ]
+            },{
+                "path": "/*",
+                "methods": [
+                    {"method": "GET","scopes": ["urn:demo:scope:default"]}
+                ]
+            }
+        ]
+    }
+}
