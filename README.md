@@ -6,8 +6,8 @@ See [Authorization Services Guide](https://www.keycloak.org/docs/latest/authoriz
 
 ## Keycloak setup
 
-1. Create application importing [demo.json]()
-1. Inside authorization tab, import [demo-authz-config.json]()
+1. Create application importing [demo.json](demo.json)
+1. Inside authorization tab, import [demo-authz-config.json](demo-authz-config.json)
 1. Create role
     1. demo-users
 1. Create users regarding the role above
