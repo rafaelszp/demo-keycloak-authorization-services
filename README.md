@@ -23,4 +23,6 @@ See [Authorization Services Guide](https://www.keycloak.org/docs/latest/authoriz
     ```
     mvn wildfly-swarm:run
     ```
-
+## TODO
+1. Setup companies resources, policies and permissions
+1. Setup manager resources, policies and permissions
